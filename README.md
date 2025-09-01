@@ -1,6 +1,6 @@
 # 🛍️ Viorra - Mobile E-commerce App
 
-A modern, responsive mobile e-commerce application built with React Native and Expo, featuring a beautiful UI design and seamless shopping experience.
+A modern, responsive mobile e-commerce application built with React Native CLI, featuring a beautiful UI design and seamless shopping experience.
 
 ## 📱 App Screenshots
 
@@ -55,7 +55,6 @@ A modern, responsive mobile e-commerce application built with React Native and E
 - Like/unlike functionality for products
 - Product detail pages with full information
 
-
 ### 📊 **API Integration**
 - **DummyJSON API** fully integrated for dynamic content
 - Real-time product data fetching
@@ -65,24 +64,25 @@ A modern, responsive mobile e-commerce application built with React Native and E
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: React Native + Expo
-- **Navigation**: Expo Router
+- **Frontend**: React Native CLI
+- **Navigation**: React Navigation v6
 - **State Management**: React Hooks (useState, useEffect, useCallback, useMemo)
 - **API**: DummyJSON REST API
-- **Icons**: Expo Vector Icons (Ionicons)
+- **Icons**: React Native Vector Icons
 - **Fonts**: Custom TTF fonts (Inter Light, Playfair Display ExtraBold)
 - **Styling**: StyleSheet with responsive design
-- **Build Tool**: Expo CLI + Gradle
+- **Build Tool**: React Native CLI + Gradle
 
 ## 📋 Prerequisites
 
 Before you begin, ensure you have the following installed:
 - [Node.js](https://nodejs.org/) (v16 or higher)
 - [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
-- [Expo CLI](https://docs.expo.dev/get-started/installation/)
+- [React Native CLI](https://reactnative.dev/docs/environment-setup)
 - [Android Studio](https://developer.android.com/studio) (for Android builds)
 - [Android SDK](https://developer.android.com/studio#command-tools)
 - [Java Development Kit (JDK)](https://adoptium.net/) (v11 or higher)
+- [Xcode](https://developer.apple.com/xcode/) (for iOS builds - macOS only)
 
 ## 🚀 Setup Instructions
 
@@ -99,60 +99,32 @@ npm install
 yarn install
 ```
 
-### 3. **Install Expo CLI Globally**
+### 3. **Install React Native CLI Globally**
 ```bash
-npm install -g @expo/cli
+npm install -g react-native-cli
 ```
 
-### 4. **Start Development Server**
+### 4. **Install iOS Dependencies (macOS only)**
 ```bash
-npx expo start
+cd ios && pod install && cd ..
 ```
 
-### 5. **Run on Device/Emulator**
-
-#### **Option A: Expo Go (Development)**
-1. Install [Expo Go](https://expo.dev/client) on your device
-2. Scan the QR code from the terminal
-3. App will load in Expo Go
-
-#### **Option B: Development Build (Recommended)**
+### 5. **Start Metro Bundler**
 ```bash
-npx expo run:android
-# or
-npx expo run:ios
+npx react-native start
 ```
 
-## 🏗️ Building Standalone APK
+### 6. **Run on Device/Emulator**
 
-### **First Time Setup (Generate Native Project)**
+#### **Android**
 ```bash
-npx expo prebuild --platform android
+npx react-native run-android
 ```
 
-### **Build Release APK**
+#### **iOS (macOS only)**
 ```bash
-cd android
-./gradlew assembleRelease
+npx react-native run-ios
 ```
-
-The APK will be generated at:
-```
-android/app/build/outputs/apk/release/app-release.apk
-```
-
-### **Subsequent Builds (No Native Changes)**
-```bash
-cd android
-./gradlew assembleRelease
-```
-
-### **When to Re-run Prebuild**
-Only run `npx expo prebuild --platform android` when:
-- Installing/updating native libraries
-- Changing app.json configuration
-- Upgrading Expo SDK version
-- Adding new native dependencies
 
 ## 🔌 API Integration Details
 
@@ -173,29 +145,31 @@ Only run `npx expo prebuild --platform android` when:
 
 ```
 viorra/
-├── app/                    # Expo Router app directory
-│   ├── (app)/             # Main app screens
-│   │   ├── (tabs)/        # Tab navigation
-│   │   │   ├── home.tsx   # Home screen with products
-│   │   │   └── profile.tsx # User profile screen
-│   │   ├── onboarding.tsx # Onboarding screen
-│   │   ├── login.tsx      # Login screen
-│   │   ├── register.tsx   # Registration screen
-│   │   └── product/       # Product detail screens
-│   │       └── [id].tsx   # Dynamic product page
-│   └── _layout.tsx        # Root layout with font loading
-├── assets/                 # Static assets
-│   ├── fonts/             # Custom font files
+├── src/                    # Source code directory
+│   ├── components/        # Reusable components
+│   ├── screens/          # App screens
+│   │   ├── HomeScreen.tsx   # Home screen with products
+│   │   ├── OnboardingScreen.tsx # Onboarding screen
+│   │   ├── LoginScreen.tsx      # Login screen
+│   │   ├── RegisterScreen.tsx   # Registration screen
+│   │   ├── ProfileScreen.tsx    # User profile screen
+│   │   └── ProductDetailScreen.tsx # Product detail screen
+│   ├── navigation/       # Navigation configuration
+│   ├── services/         # API services
+│   ├── utils/           # Utility functions
+│   ├── constants/       # App constants
+│   └── types/           # TypeScript type definitions
+├── assets/              # Static assets
+│   ├── fonts/          # Custom font files
 │   │   ├── Inter-Light.ttf
 │   │   └── PlayfairDisplay-ExtraBold.ttf
-│   └── images/            # App images and icons
-├── components/             # Reusable components
-│   ├── ItalianaText.tsx   # Custom text component
-│   ├── InterText.tsx      # Inter font component
-│   └── PlayfairText.tsx   # Playfair font component
-├── constants/              # App constants
-├── hooks/                  # Custom React hooks
-└── scripts/                # Build and utility scripts
+│   └── images/         # App images and icons
+├── android/            # Android native code
+├── ios/               # iOS native code
+└── components/        # Shared components
+    ├── ItalianaText.tsx   # Custom text component
+    ├── InterText.tsx      # Inter font component
+    └── PlayfairText.tsx   # Playfair font component
 ```
 
 ## 🎨 Custom Components
@@ -213,28 +187,27 @@ viorra/
 
 ## 🔧 Configuration
 
-### **app.json Key Settings**
-```json
-{
-  "expo": {
-    "name": "Viorra",
-    "slug": "viorra",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "splash": {
-      "image": "./assets/images/splash.png",
-      "backgroundColor": "#E8B4B8"
-    },
-    "android": {
-      "package": "com.anonymous.viorra",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon.png",
-        "backgroundColor": "#ffffff"
-      }
+### **Android Configuration (android/app/build.gradle)**
+```gradle
+android {
+    compileSdkVersion 33
+    
+    defaultConfig {
+        applicationId "com.viorrarn"
+        minSdkVersion 21
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0"
     }
-  }
 }
+```
+
+### **iOS Configuration (ios/ViorraRN/Info.plist)**
+```xml
+<key>CFBundleDisplayName</key>
+<string>Viorra</string>
+<key>CFBundleIdentifier</key>
+<string>com.viorrarn</string>
 ```
 
 ## 🚀 Performance Features
@@ -252,35 +225,50 @@ viorra/
 #### **Build Failures**
 ```bash
 # Clean build directory
-rm -rf android
-npx expo prebuild --platform android --clean
+cd android && ./gradlew clean
+# For iOS
+cd ios && xcodebuild clean
+```
+
+#### **Metro Cache Issues**
+```bash
+# Clear Metro cache
+npx react-native start --reset-cache
 ```
 
 #### **Font Loading Issues**
 ```bash
-# Ensure fonts are in assets/fonts/
-# Check font names in _layout.tsx
+# Link assets (if using React Native < 0.60)
+npx react-native link
+# For newer versions, fonts should auto-link via react-native.config.js
 ```
 
-#### **API Connection Issues**
-- Verify internet connection
-- Check DummyJSON API status
-- Ensure proper error handling in fetch calls
+#### **Android Build Issues**
+```bash
+# Check Android SDK path
+echo $ANDROID_HOME
+# Rebuild
+cd android && ./gradlew clean && ./gradlew assembleDebug
+```
+
+#### **iOS Build Issues (macOS)**
+```bash
+# Clean and rebuild pods
+cd ios && rm -rf Pods && pod install
+```
 
 #### **Development Server Issues**
 ```bash
-# Clear Metro cache
-npx expo start --clear
-
-# Reset Expo cache
-npx expo install --fix
+# Kill Metro process
+lsof -ti:8081 | xargs kill -9
+# Restart Metro
+npx react-native start
 ```
 
 ## 📱 Supported Platforms
 
 - ✅ **Android**: 6.0 (API level 23) and higher
 - ✅ **iOS**: 12.0 and higher
-- ✅ **Web**: Responsive web version (optional)
 
 ## 🤝 Contributing
 
@@ -297,8 +285,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - **DummyJSON** for providing the product API
-- **Expo** team for the amazing development platform
 - **React Native** community for continuous improvements
+- **React Navigation** for navigation solutions
 - **Google Fonts** for the beautiful typography
 
 ## 📞 Support
@@ -307,10 +295,10 @@ If you encounter any issues or have questions:
 
 - **GitHub Issues**: [Create an issue](https://github.com/yourusername/viorra/issues)
 - **Email**: your.email@example.com
-- **Documentation**: [Expo Docs](https://docs.expo.dev/)
+- **Documentation**: [React Native Docs](https://reactnative.dev/docs/getting-started)
 
 ---
 
-**Made with ❤️ using React Native & Expo**
+**Made with ❤️ using React Native CLI**
 
-*Last updated: August 2024*
+*Last updated: December 2024*
